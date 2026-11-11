@@ -1,0 +1,72 @@
+rules_version = '2';
+
+// Estas regras espelham a tabela de cargos de src/utils/permissions.js.
+// Se mudar um cargo lá, mude aqui também.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function profilePath() {
+      return /databases/$(database)/documents/users/$(request.auth.uid);
+    }
+    function hasProfile() {
+      return request.auth != null && exists(profilePath());
+    }
+    function me() {
+      return get(profilePath()).data;
+    }
+    function isActive() {
+      return hasProfile() && me().get('active', true) != false;
+    }
+    function isRole(role) {
+      return isActive() && me().role == role;
+    }
+    function sameUnit(unitId) {
+      return isActive() && me().unitId == unitId;
+    }
+
+    // Perfil de cada login: users/{uid}
+    match /users/{uid} {
+      allow read: if request.auth != null
+        && (request.auth.uid == uid
+            || (isRole('admin') && me().unitId == resource.data.unitId));
+
+      // Só o Administrativo cria/edita logins, e apenas da própria unidade.
+      allow create: if isRole('admin')
+        && request.resource.data.unitId == me().unitId
+        && request.resource.data.role in ['admin', 'vendedor', 'operacional'];
+
+      allow update: if isRole('admin')
+        && resource.data.unitId == me().unitId
+        && request.resource.data.unitId == me().unitId
+        && request.resource.data.role in ['admin', 'vendedor', 'operacional'];
+    }
+
+    // Agendamentos da unidade.
+    match /appointments/{id} {
+      allow read: if sameUnit(resource.data.unitId);
+
+      allow create: if (isRole('admin') || isRole('vendedor'))
+        && sameUnit(request.resource.data.unitId)
+        && request.resource.data.createdBy == request.auth.uid;
+
+      // Vendedor edita as informações básicas; valor, concluído e favorito são do Administrativo.
+      allow update: if sameUnit(resource.data.unitId)
+        && request.resource.data.unitId == resource.data.unitId
+        && (isRole('admin')
+            || (isRole('vendedor')
+                && !request.resource.data.diff(resource.data).affectedKeys()
+                     .hasAny(['price', 'isCompleted', 'isStarred', 'unitId', 'createdBy', 'createdAt'])));
+
+      allow delete: if isRole('admin') && sameUnit(resource.data.unitId);
+    }
+
+    // Aparelhos que recebem avisos. Ninguém lê; só o Worker de avisos (que usa a conta de serviço e ignora as regras).
+    match /fcmTokens/{token} {
+      allow create, update: if isActive()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.unitId == me().unitId;
+
+      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+  }
+}

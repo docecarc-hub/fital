@@ -1,0 +1,7 @@
+name = "sitecar-notificacoes"
+main = "index.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+FIREBASE_PROJECT_ID = "car-doce-car"
+ALLOWED_ORIGINS = "https://car-doce-car.web.app,https://car-doce-car.firebaseapp.com,https://car-doce-car.vercel.app,http://localhost:5000"

@@ -1,0 +1,404 @@
+.appointment-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  min-width: 0;
+  padding: 16px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: border-color 0.15s, box-shadow 0.15s, opacity 0.15s;
+}
+
+/* Faixa lateral que indica a situação do serviço */
+.appointment-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  background: var(--blue);
+}
+
+.appointment-item:hover {
+  border-color: var(--blue-border);
+}
+
+.appointment-item.is-starred {
+  border-color: #f3d58a;
+}
+
+.appointment-item.is-overdue::before {
+  background: var(--danger);
+}
+
+.appointment-item.is-done::before {
+  background: var(--green);
+}
+
+.appointment-item.is-done .title,
+.appointment-item.is-done .time-value {
+  color: var(--muted);
+}
+
+.appointment-item.is-done .description {
+  color: #8b93a3;
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-left: 4px;
+}
+
+/* Horário em destaque */
+.time-block {
+  flex-shrink: 0;
+  min-width: 58px;
+  padding-top: 1px;
+}
+
+.time-value {
+  color: var(--blue);
+  font-size: 20px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.card-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.header-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.title {
+  margin: 2px 0 0;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.star-button {
+  flex-shrink: 0;
+  margin: -2px -4px 0 0;
+  padding: 4px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.star-button:hover {
+  background: #fff7e0;
+}
+
+.star {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+.star-button:focus-visible,
+.action-button:focus-visible {
+  outline: 3px solid rgba(0, 25, 105, 0.3);
+  outline-offset: 2px;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+}
+
+.meta:not(:empty) {
+  margin-top: 8px;
+}
+
+.tag {
+  padding: 2px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 999px;
+}
+
+.tag-done {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.tag-overdue {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.tag-time-passed {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.description {
+  margin: 8px 0 0;
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Ações ---------- */
+.actions-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 12px 0 0 4px;
+  border-top: 1px solid var(--line);
+}
+
+.card-footer .actions-container {
+  margin-top: 0;
+}
+
+.secondary-actions {
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+/* Botão principal: concluir serviço */
+.complete-button {
+  height: 40px;
+  padding: 0 18px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--green);
+}
+
+.complete-button:hover {
+  background: #0b6339;
+}
+
+.check-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.reopen-button {
+  height: 36px;
+  color: var(--muted);
+  background: #ffffff;
+  border-color: #c9cedd;
+}
+
+.reopen-button:hover {
+  color: var(--blue);
+  background: var(--blue-soft);
+  border-color: var(--blue-border);
+}
+
+.edit-button {
+  color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.edit-button:hover {
+  background: #e0e6f8;
+}
+
+.delete-button {
+  color: var(--danger);
+  background: #ffffff;
+  border-color: #f0c9c7;
+}
+
+.delete-button:hover {
+  background: var(--danger-soft);
+}
+
+.calendar-button {
+  padding: 6px 8px;
+  color: var(--muted);
+  font-size: 12px;
+  background: transparent;
+}
+
+.calendar-button:hover {
+  color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.save-button {
+  color: #ffffff;
+  background: var(--blue);
+}
+
+.save-button:hover {
+  background: var(--blue-hover);
+}
+
+.cancel-button {
+  color: var(--muted);
+  background: #ffffff;
+  border-color: #c9cedd;
+}
+
+.cancel-button:hover {
+  background: var(--tint);
+}
+
+/* No celular o botão de concluir ocupa a largura toda (fácil de tocar) */
+@media screen and (max-width: 560px) {
+  .complete-button,
+  .reopen-button {
+    width: 100%;
+  }
+
+  .secondary-actions {
+    justify-content: flex-start;
+  }
+
+  .time-value {
+    font-size: 18px;
+  }
+
+  .time-block {
+    min-width: 50px;
+  }
+}
+
+/* ---------- Edição ---------- */
+.edit-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.edit-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.edit-label {
+  margin-bottom: 6px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.edit-input {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 14px;
+  padding: 0 12px;
+  color: #131415;
+  font-size: 14px;
+  background: #ffffff;
+  border: 1px solid #c9cedd;
+  border-radius: 10px;
+  outline: none;
+}
+
+.edit-input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(0, 25, 105, 0.14);
+}
+
+.edit-input.edit-textarea {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 12px;
+  resize: vertical;
+  line-height: 1.4;
+}
+
+/* ---------- Carro, serviço e valor ---------- */
+.subtitle {
+  margin: 4px 0 0;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.price {
+  margin: 6px 0 0;
+  color: var(--green);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.appointment-item.is-done .subtitle,
+.appointment-item.is-done .price {
+  opacity: 0.7;
+}
+
+.description-label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.edit-optional {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.edit-input.edit-input-error {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.edit-form .form-error {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  color: var(--danger);
+  font-size: 13px;
+  line-height: 1.4;
+  background: var(--danger-soft);
+  border-radius: 10px;
+}
